@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = TestrailIntgration::VERSION
   spec.authors       = ["Kirikami"]
   spec.email         = ["naumenko.ruslan@outlook.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Gem for integration between framework and TestRail}
+  spec.description   = %q{Setups status of tests into TestRail after each scenario}
   spec.homepage      = ""
   spec.license       = "MIT"
 
