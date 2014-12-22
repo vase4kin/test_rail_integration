@@ -16,4 +16,4 @@ DEPENDENCIES
   bundler (~> 1.7)
   rake (~> 10.0)
   test_rail_integration!
-  thor (>= 0.17.0)
+  thor (~> 0.17, >= 0.17.0)
