@@ -1,0 +1,25 @@
+:connection_data:
+  :url: #put here url of your TestRail server
+  :username: #TestRail username
+  :password: #Password for TestRail user
+
+:project: # Test project id can be found in Test Rail
+:test_suite: # Test suite id can be found in Test Rail
+:assigned_to: # Id of person could be found in Test Rail
+:description_of_run: "Automatically generated report by auto tests."
+
+:status_comment: 0
+:test_pass: 1
+:need_to_retest: 4
+:test_failed: 5
+:new_test: 0
+
+:test_passed_comment: "test **passed**"
+:test_failed_comment: "test **failed**"
+
+:ventures: #values for generating parametrized url for running test
+:environments: #values for generating parametrized url for running test
+
+:in_progress: " (in progress)" #value for changing test run name for monitoring complete of test run
+
+:test_run_id: 0 #parametrized test run from "ruby run_test_run.rb <testrun number>"

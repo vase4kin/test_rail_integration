@@ -1,0 +1,19 @@
+PATH
+  remote: .
+  specs:
+    test_rail_integration (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    rake (10.3.2)
+    thor (0.19.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.7)
+  rake (~> 10.0)
+  test_rail_integration!
+  thor (>= 0.17.0)
