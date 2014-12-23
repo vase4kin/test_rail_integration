@@ -1,0 +1,2 @@
+require 'testgen/cli'
+TestRailIntegration::CLI.start

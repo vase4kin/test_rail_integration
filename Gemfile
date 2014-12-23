@@ -1,4 +1,8 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in test_rail_integration.gemspec
-gemspec
+gem 'thor'
+gem 'ftools'
+gem 'yaml'
+gem 'net'
+gem 'uri'
+gem 'json'

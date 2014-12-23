@@ -1,4 +1,4 @@
-# TestrailIntgration
+# TestRailIntegration
 
 TODO: Write a gem description
 
@@ -7,7 +7,7 @@ TODO: Write a gem description
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'testrail_intgration'
+gem 'test_rail_integration'
 ```
 
 And then execute:
