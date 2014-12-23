@@ -1,4 +1,3 @@
-require "testrail_integration/version"
 require 'ftools'
 require 'thor/group'
 
@@ -11,11 +10,11 @@ module TestRailIntegration
         desc "Generates files that contains information about TestRail"
 
         def self.source_root
-          File.dirname(__FILE__)
+          File.dirname(__FILE__) + "/project"
         end
 
         def self.project_root
-          File.dirname(__FILE__) + "/project"
+          File.dirname(__FILE__)
         end
 
         def self.file_exist?
@@ -27,9 +26,8 @@ module TestRailIntegration
         end
 
         def copy_run_test_run
-          copy("project/run_test_run.rb", "#{project_root}/config/data/testrail_data.yml")
+          copy("project/run_test_run.rb", "#{project_root}/run_test_run.rb")
         end
-        TestGen::Generators::Project.start(copy_run_test_run)
       end
     end
   end

@@ -1,3 +1,3 @@
-module TestRailInetgration
-  VERSION = "0.0.2"
+module TestRailIntegration
+  VERSION = "0.0.2.2"
 end

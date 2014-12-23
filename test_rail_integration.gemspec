@@ -21,8 +21,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency 'thor', '~> 0.17', '>= 0.17.0'
-  spec.add_development_dependency "yaml"
-  spec.add_development_dependency "net"
-  spec.add_development_dependency "uri"
-  spec.add_development_dependency "json"
 end
