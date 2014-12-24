@@ -1,4 +1,4 @@
-require 'ftools'
+require 'fileutils'
 require 'thor/group'
 
 module TestRailIntegration
@@ -17,16 +17,16 @@ module TestRailIntegration
           File.dirname(__FILE__)
         end
 
-        def self.file_exist?
-          exists?("#{project_root}/config/data/testrail_data.yml")
+        def self.test_rail_data_file_exist?
+          File.exists?("#{project_root}/config/data/testrail_data.yml")
         end
 
-        def copy_testrail_data_yml
-          copy("project/testrail_data.yml", "#{project_root}/config/data/testrail_data.yml")
+        def self.copy_test_rail_data_yml
+          FileUtils.cp("project/testrail_data.yml", "#{project_root}/config/data/testrail_data.yml")
         end
 
-        def copy_run_test_run
-          copy("project/run_test_run.rb", "#{project_root}/run_test_run.rb")
+        def self.copy_run_test_run
+          FileUtils.cp("#{project_root}/project/run_test_run.rb", "run_test_run.rb")
         end
       end
     end
