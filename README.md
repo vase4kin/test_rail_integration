@@ -26,7 +26,7 @@ For perform this actions in Jenkins just create Execute shell "ruby run_test_run
 
 ## Contributing
 
-1. Fork it ( https://github.com/kirikami/testrail_intgration/fork )
+1. Fork it ( https://github.com/kirikami/test_rail_integration/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
