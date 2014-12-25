@@ -69,18 +69,32 @@ module TestRail
       @test_run_id = test_run_id
     end
 
+    #
+    # Getting test run id value
+    #
     def self.test_run_id
       @test_run_id ||= TEST_RUN_ID
     end
 
+    #
+    # Getting information about test run
+    #
     def self.test_run_data
       client.send_get("get_run/#{test_run_id}")
     end
 
+    #
+    # Get test run name
+    #
     def self.test_run_name
       test_run_data["name"]
     end
 
+    #
+    # Changing name of test run from <test run name> in progress to <test run name>
+    #
+    # VN LIVE_TEST in progress => VN LIVE_TEST
+    #
     def self.change_test_run_name
       new_name = test_run_name.gsub(IN_PROGRESS, "")
       client.send_post("update_run/#{test_run_id}", { name: new_name })
