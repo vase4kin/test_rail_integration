@@ -8,6 +8,7 @@ Add this line to your application's Gemfile:
 
 ```ruby
 gem 'test_rail_integration'
+gem 'thor'
 ```
 
 And then execute:
