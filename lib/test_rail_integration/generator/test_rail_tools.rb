@@ -5,15 +5,15 @@ require_relative 'test_run_parameters'
 module TestRail
   class TestRailTools
 
-    CONFIG_PATH ||= File.expand_path(File.dirname(__FILE__) + '/../config/data/testrail_data.yml')
+    CONFIG_PATH ||= ('config/data/test_rail_data.yml')
 
-    def self.testrail_data
+    def self.test_rail_data
       YAML.load(File.open(CONFIG_PATH))
     end
 
     def self.generate_cucumber_execution_file(id_of_run)
       parameters    = TestRunParameters.new
-      command = "cucumber -p lazada.#{parameters.venture}.#{parameters.environment} TESTRAIL=1 --color -f json -o cucumber.json -t  " + Connection.cases_id(id_of_run).map { |id| "@C"+id.to_s }.join(",")
+      command       = "cucumber -p lazada.#{parameters.venture}.#{parameters.environment} TESTRAIL=1 --color -f json -o cucumber.json -t  " + Connection.cases_id(id_of_run).map { |id| "@C"+id.to_s }.join(",")
       cucumber_file = File.new("cucumber_run.sh", "w")
       cucumber_file.chmod(0700)
       cucumber_file.write("#!/bin/sh\n")
@@ -34,6 +34,12 @@ module TestRail
       generate_cucumber_execution_file(run_id)
     end
 
+    def create_test_rail_data_file
+      unless TestRailIntegration::TestTail::Generators::Project.test_rail_data_file_exist?
+        TestRailIntegration::TestTail::Generators::Project.copy_file("test_rail_data.yml")
+        raise "Please fill all required data in test rail data yml file"
+      end
+    end
   end
 end
 

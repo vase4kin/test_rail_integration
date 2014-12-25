@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = TestRailIntegration::VERSION
   spec.authors       = ["Kirikami"]
   spec.email         = ["naumenko.ruslan@outlook.com"]
-  spec.summary       = %q{Gem for integration between framework and TestRail}
+  spec.summary       = %q{Gem for integration between framework and TestRail API}
   spec.description   = %q{Setups status of tests into TestRail after each scenario}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/Kirikami/test_rail_integration"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

@@ -1,3 +1,3 @@
 module TestRailIntegration
-  VERSION = "0.0.2.13"
+  VERSION = "0.0.3.2"
 end

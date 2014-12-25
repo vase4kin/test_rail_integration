@@ -1,11 +1,10 @@
 #!/usr/bin/env ruby
 require 'test_rail_integration'
+require 'thor'
+require 'test_rail_integration/generator/test_rail_tools'
 
 module TestRail
-  unless Generators::Project.test_rail_data_file_exist?
-  Generators::Project.copy_test_rail_data_yml
-  raise "Please fill all required data in test rail data yml file"
-  end
+  create_test_rail_data_file
   id_of_run = ARGV.shift
   TestRailTools.prepare_config(id_of_run)
 end

@@ -5,12 +5,12 @@ module TestRail
 
     attr_accessor :test_case_id, :title, :comment, :exception_message
 
-    COMMENT_STATUS ||= TestRailTools.testrail_data[:status_comment]
-    PASS           ||= TestRailTools.testrail_data[:test_pass]
-    FAILED         ||= TestRailTools.testrail_data[:test_failed]
-    NEW            ||= TestRailTools.testrail_data[:new_test]
-    PASS_COMMENT   ||= TestRailTools.testrail_data[:test_passed_comment]
-    FAILED_COMMENT ||= TestRailTools.testrail_data[:test_failed_comment]
+    COMMENT_STATUS ||= TestRailTools.test_rail_data[:status_comment]
+    PASS           ||= TestRailTools.test_rail_data[:test_pass]
+    FAILED         ||= TestRailTools.test_rail_data[:test_failed]
+    NEW            ||= TestRailTools.test_rail_data[:new_test]
+    PASS_COMMENT   ||= TestRailTools.test_rail_data[:test_passed_comment]
+    FAILED_COMMENT ||= TestRailTools.test_rail_data[:test_failed_comment]
 
     COMMENT ||= { :pass           => { status: PASS, comment: PASS_COMMENT },
                   :fail           => { status: FAILED, comment: FAILED_COMMENT },

@@ -3,9 +3,10 @@ require_relative 'generator/project'
 
 module TestRailIntegration
   class CLI < Thor
-    desc "run", "Creates project for interaction with TestRail"
-    def run
-      TestRailIntegration::TestTail::Generators::Project.copy_run_test_run
+    desc "perform", "Creates project for interaction with TestRail"
+
+    def perform
+      TestRailIntegration::TestTail::Generators::Project.copy_file("run_test_run.rb")
     end
   end
 end

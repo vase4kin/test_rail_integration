@@ -2,7 +2,7 @@ require_relative 'API_client'
 
 module TestRail
   class TestRunParameters
-    VENTURE_REGEX ||= /vn|id|ph|my|sg|th/
+    VENTURE_REGEX     ||= /vn|id|ph|my|sg|th/
     ENVIRONMENT_REGEX ||= /live_test|staging|showroom/
 
     attr_accessor :environment, :venture
