@@ -18,11 +18,16 @@ module TestRailIntegration
         end
 
         def self.copy_file(file_name, root = nil)
-          FileUtils.cp("#{source_root}/project/#{file_name}", "#{root}/#{file_name}")
+          if file_name == "test_rail_data.yml"
+            FileUtils.mkdir("config/data")
+          end
+          if root
+            FileUtils.cp("#{source_root}/project/#{file_name}", "#{root}/#{file_name}")
+          else
+            FileUtils.cp("#{source_root}/project/#{file_name}", "#{file_name}")
+          end
         end
       end
     end
   end
 end
-
-

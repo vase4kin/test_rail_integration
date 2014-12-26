@@ -6,7 +6,7 @@ module TestRailIntegration
     desc "perform", "Creates project for interaction with TestRail"
 
     def perform
-      TestRailIntegration::TestTail::Generators::Project.copy_file("run_test_run.rb")
+      TestRailIntegration::TestTail::Generators::Project.copy_file('run_test_run.rb')
     end
   end
 end

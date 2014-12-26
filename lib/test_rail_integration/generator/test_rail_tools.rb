@@ -33,13 +33,6 @@ module TestRail
       write_test_run_id(run_id)
       generate_cucumber_execution_file(run_id)
     end
-
-    def create_test_rail_data_file
-      unless TestRailIntegration::TestTail::Generators::Project.test_rail_data_file_exist?
-        TestRailIntegration::TestTail::Generators::Project.copy_file("test_rail_data.yml")
-        raise "Please fill all required data in test rail data yml file"
-      end
-    end
   end
 end
 

@@ -1,6 +1,6 @@
-require_relative 'test_rail_tools'
-require_relative 'test_case_result'
 require_relative 'API_client'
+require_relative 'test_case_result'
+require_relative 'test_rail_tools'
 
 module TestRail
   class Connection
