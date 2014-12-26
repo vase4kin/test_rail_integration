@@ -1,3 +1,5 @@
+require 'test_rail_integration/generator/connection'
+
 module TestRail
   class Hook
 

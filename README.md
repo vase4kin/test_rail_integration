@@ -24,7 +24,7 @@ Or install it yourself as:
 After installation type "test_rail_interaction perform". This command generate executable file run_test_run.rb. You should run this file with parameter - number on test run in TestRail
 Fill all data in test_rail_data.yml. Next time run_test_run.rb <run_number> will generate cucumber executable file.
 For perform this actions in Jenkins just create Execute shell "ruby run_test_run.rb $Testrun_id ; ./cucumber_run.sh;" where $Testrun_id its string parameter for parameterized builds.
-
+Add TestRail::Hook.update_test_rail(scenario) into after hook.
 ## Contributing
 
 1. Fork it ( https://github.com/kirikami/test_rail_integration/fork )
