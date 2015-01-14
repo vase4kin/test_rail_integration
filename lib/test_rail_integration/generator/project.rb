@@ -9,17 +9,26 @@ module TestRailIntegration
 
         desc "Generates files that contains information about TestRail"
 
+        #
+        # Obtaining path of project folder
+        #
         def self.source_root
           File.dirname(__FILE__)
         end
 
+        #
+        # Checking existence of tes trail data file
+        #
         def self.test_rail_data_file_exist?
           File.exists?("config/data/test_rail_data.yml")
         end
 
+        #
+        # Copying templates for using for accessing to testrail
+        #
         def self.copy_file(file_name, root = nil)
           if file_name == "test_rail_data.yml"
-            FileUtils.mkdir("config/data")
+            FileUtils.mkdir_p("config/data")
           end
           if root
             FileUtils.cp("#{source_root}/project/#{file_name}", "#{root}/#{file_name}")

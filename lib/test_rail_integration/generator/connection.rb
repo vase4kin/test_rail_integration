@@ -1,16 +1,16 @@
+require_relative 'test_rail_data_load'
 require_relative 'API_client'
 require_relative 'test_case_result'
-require_relative 'test_rail_tools'
 
 module TestRail
   class Connection
 
-    ASSIGNED_TO     ||= TestRailTools.test_rail_data[:assigned_to]
-    TEST_SUITE      ||= TestRailTools.test_rail_data[:test_suite]
-    CONNECTION_DATA ||= TestRailTools.test_rail_data[:connection_data]
-    PROJECT_ID      ||= TestRailTools.test_rail_data[:project]
-    TEST_RUN_ID     ||= TestRailTools.test_rail_data[:test_run_id]
-    IN_PROGRESS     ||= TestRailTools.test_rail_data[:in_progress]
+    ASSIGNED_TO     ||= TestRailDataLoad.test_rail_data[:assigned_to]
+    TEST_SUITE      ||= TestRailDataLoad.test_rail_data[:test_suite]
+    CONNECTION_DATA ||= TestRailDataLoad.test_rail_data[:connection_data]
+    PROJECT_ID      ||= TestRailDataLoad.test_rail_data[:project]
+    TEST_RUN_ID     ||= TestRailDataLoad.test_rail_data[:test_run_id]
+    IN_PROGRESS     ||= TestRailDataLoad.test_rail_data[:in_progress]
     NO_TEST_RAIL    ||= 0
 
     #

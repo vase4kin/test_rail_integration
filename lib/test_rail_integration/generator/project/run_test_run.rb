@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'test_rail_integration/generator/test_rail_data_load'
 require 'test_rail_integration'
 require 'thor'
 require 'test_rail_integration/generator/API_client'

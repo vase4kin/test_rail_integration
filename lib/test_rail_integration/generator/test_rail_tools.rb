@@ -1,16 +1,19 @@
-require 'yaml'
+require_relative 'test_rail_data_load'
 require_relative 'connection'
 require_relative 'test_run_parameters'
 
 module TestRail
   class TestRailTools
 
-    CONFIG_PATH ||= ('config/data/test_rail_data.yml')
-
-    def self.test_rail_data
-      YAML.load(File.open(CONFIG_PATH))
-    end
-
+    #
+    # Method generates executable cucumber file
+    #
+    # generate_cucumber_execution_file(2)
+    #
+    # cucumber -p lazada.vn.live_test TESTRAIL=1 --color -f json -o cucumber.json -t  @C6162,@C6163,@C6164
+    #
+    # change this method for create your own cucumber executable
+    #
     def self.generate_cucumber_execution_file(id_of_run)
       parameters    = TestRunParameters.new
       command       = "cucumber -p lazada.#{parameters.venture}.#{parameters.environment} TESTRAIL=1 --color -f json -o cucumber.json -t  " + Connection.cases_id(id_of_run).map { |id| "@C"+id.to_s }.join(",")
@@ -21,13 +24,19 @@ module TestRail
       cucumber_file.close
     end
 
+    #
+    # Writing test run ID into test rail data file
+    #
     def self.write_test_run_id(test_run_id)
-      testrail_data_file = File.read(CONFIG_PATH).gsub(/^:test_run_id: \d+/, ":test_run_id: #{test_run_id}")
-      config_file        = File.open(CONFIG_PATH, "w")
-      config_file.write (testrail_data_file)
+      test_rail_data_file = File.read(TestRailDataLoad::CONFIG_PATH).gsub(/^:test_run_id: \d+/, ":test_run_id: #{test_run_id}")
+      config_file        = File.open(TestRailDataLoad::CONFIG_PATH, "w")
+      config_file.write (test_rail_data_file)
       config_file.close
     end
 
+    #
+    # Preparation for create right cucumber executable file
+    #
     def self.prepare_config(run_id)
       Connection.test_run_id = run_id
       write_test_run_id(run_id)

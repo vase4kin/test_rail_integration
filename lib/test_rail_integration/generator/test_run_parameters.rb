@@ -2,13 +2,16 @@ require_relative 'API_client'
 
 module TestRail
   class TestRunParameters
-    VENTURE_REGEX     ||= /vn|id|ph|my|sg|th/
-    ENVIRONMENT_REGEX ||= /live_test|staging|showroom/
+    VENTURE_REGEX     ||= TestRail::TestRailDataLoad.test_rail_data[:ventures]
+    ENVIRONMENT_REGEX ||= TestRail::TestRailDataLoad.test_rail_data[:environments]
 
     attr_accessor :environment, :venture
 
+    #
+    # Checking of correct naming of created test run and return parameters for runnng test run
+    #
     def initialize
-      parameters = Connection.test_run_name.downcase.match(/^(#{VENTURE_REGEX}) (#{ENVIRONMENT_REGEX})*/)
+      parameters = Connection.test_run_name.downcase.match(/(#{VENTURE_REGEX}) (#{ENVIRONMENT_REGEX})*/)
       begin
         @venture     = parameters[1]
         @environment = parameters[2]

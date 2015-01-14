@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>class TestRail::Hook - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../";
+</script>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/darkfish.js"></script>
+
+<link href="../css/fonts.css" rel="stylesheet">
+<link href="../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../table_of_contents.html#pages">Pages</a>
+    <a href="../table_of_contents.html#classes">Classes</a>
+    <a href="../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">Object
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-failed_result-3F">::failed_result?</a>
+    
+    <li ><a href="#method-c-passed_result-3F">::passed_result?</a>
+    
+    <li ><a href="#method-c-unchanged_pass_result-3F">::unchanged_pass_result?</a>
+    
+    <li ><a href="#method-c-update_test_rail">::update_test_rail</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-TestRail::Hook">
+  <h1 id="class-TestRail::Hook" class="class">
+    class TestRail::Hook
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-failed_result-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">failed_result?</span><span
+            class="method-args">(result)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="failed_result-3F-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_hooks.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">failed_result?</span>(<span class="ruby-identifier">result</span>)
+  <span class="ruby-operator">!</span><span class="ruby-identifier">result</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-passed_result-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">passed_result?</span><span
+            class="method-args">(result, prev_result)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="passed_result-3F-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_hooks.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">passed_result?</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">prev_result</span>)
+  <span class="ruby-identifier">result</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">prev_result</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">FAILED</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-unchanged_pass_result-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">unchanged_pass_result?</span><span
+            class="method-args">(result, prev_result)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="unchanged_pass_result-3F-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_hooks.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">unchanged_pass_result?</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">prev_result</span>)
+  <span class="ruby-identifier">result</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">prev_result</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">FAILED</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-update_test_rail" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_test_rail</span><span
+            class="method-args">(scenario)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="update_test_rail-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_hooks.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">update_test_rail</span>(<span class="ruby-identifier">scenario</span>)
+  <span class="ruby-identifier">test_case_id</span> = <span class="ruby-identifier">scenario</span>.<span class="ruby-identifier">source_tag_names</span>.<span class="ruby-identifier">find</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">TEST_RAIL_ID_REGEX</span>) }[<span class="ruby-value">2</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]
+
+  <span class="ruby-identifier">prev_result</span>              = <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">Connection</span>.<span class="ruby-identifier">get_previous_test_result</span>(<span class="ruby-identifier">test_case_id</span>)
+  <span class="ruby-identifier">both_run_result</span>          = <span class="ruby-identifier">scenario</span>.<span class="ruby-identifier">passed?</span> <span class="ruby-operator">||</span> <span class="ruby-constant">RunInformation</span>.<span class="ruby-identifier">second_run_result</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+  <span class="ruby-identifier">test_case_result</span>         = <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">test_case_id</span>, <span class="ruby-identifier">scenario</span>.<span class="ruby-identifier">title</span>)
+
+  <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">comment</span> = <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">COMMENT</span>[<span class="ruby-value">:pass</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">passed_result?</span>(<span class="ruby-identifier">both_run_result</span>, <span class="ruby-identifier">prev_result</span>)
+  <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">comment</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">COMMENT</span>[<span class="ruby-value">:unchanged_pass</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">unchanged_pass_result?</span>(<span class="ruby-identifier">both_run_result</span>, <span class="ruby-identifier">prev_result</span>)
+
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">failed_result?</span>(<span class="ruby-identifier">both_run_result</span>)
+    <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">comment</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">COMMENT</span>[<span class="ruby-value">:fail</span>]
+    <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">exception_message</span> = <span class="ruby-identifier">scenario</span>.<span class="ruby-identifier">steps</span>.<span class="ruby-identifier">exception</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-identifier">raise</span>(<span class="ruby-node">&quot;Invalide test case result : scenario.passed? #{scenario.passed?}, both_run_result? #{both_run_result}  prev_result? #{prev_result}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">comment</span>.<span class="ruby-identifier">nil?</span>
+
+  <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">Connection</span>.<span class="ruby-identifier">commit_test_result</span>(<span class="ruby-identifier">test_case_result</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
