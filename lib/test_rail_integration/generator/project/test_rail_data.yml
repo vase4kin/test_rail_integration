@@ -14,8 +14,8 @@
 :test_failed: 5
 :new_test: 0
 
-:test_passed_comment: "test **passed**"
-:test_failed_comment: "test **failed**"
+:test_passed_comment: "**passed:**"
+:test_failed_comment: "**failed:**"
 
 :ventures: vn|id|ph|my|sg|th #values for generating parametrized url for running test
 :environments: live_test|staging|showroom #values for generating parametrized url for running test

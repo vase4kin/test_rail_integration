@@ -28,7 +28,7 @@ module TestRail
     # {status_id: 1, comment: "Test passed"}
     #
     def to_test_rail_api
-      comment_message = "\"#{self.title}\" #{self.comment[:comment]}"
+      comment_message = "#{self.comment[:comment]} \"#{self.title}\""
       comment_message += "\n Exception : #{self.exception_message}" unless self.exception_message.nil?
       if  self.comment[:status] == COMMENT_STATUS
         { comment: comment_message }
