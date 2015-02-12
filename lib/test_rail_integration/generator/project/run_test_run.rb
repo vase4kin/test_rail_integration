@@ -11,7 +11,11 @@ module TestRail
     TestRailIntegration::TestTail::Generators::Project.copy_file("test_rail_data.yml")
     raise "Please fill all required data in test rail data yml file"
   end
-  id_of_run = ARGV.shift
-  TestRailTools.prepare_config(id_of_run)
+
+  parameters = ARGV
+  id_of_run = parameters[0]
+  environment_for_run = []
+  environment_for_run = parameters[1], parameters[2]
+  TestRailTools.prepare_config(id_of_run, environment_for_run)
 end
 

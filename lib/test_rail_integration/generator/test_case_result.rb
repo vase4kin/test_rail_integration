@@ -3,7 +3,7 @@ require_relative 'test_rail_data_load'
 module TestRail
   class TestCaseResult
 
-    attr_accessor :test_case_id, :title, :comment, :exception_message
+    attr_accessor :test_case_id, :title, :comment, :exception_message, :assign_to
 
     COMMENT_STATUS ||= TestRail::TestRailDataLoad.test_rail_data[:status_comment]
     PASS           ||= TestRail::TestRailDataLoad.test_rail_data[:test_pass]
@@ -11,6 +11,8 @@ module TestRail
     NEW            ||= TestRail::TestRailDataLoad.test_rail_data[:new_test]
     PASS_COMMENT   ||= TestRail::TestRailDataLoad.test_rail_data[:test_passed_comment]
     FAILED_COMMENT ||= TestRail::TestRailDataLoad.test_rail_data[:test_failed_comment]
+    ASSIGN_TO      ||= TestRail::TestRailDataLoad.test_rail_data[:assign_to]
+
 
     COMMENT ||= { :pass           => { status: PASS, comment: PASS_COMMENT },
                   :fail           => { status: FAILED, comment: FAILED_COMMENT },

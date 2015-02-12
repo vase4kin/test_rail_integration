@@ -11,6 +11,7 @@ module TestRail
     PROJECT_ID      ||= TestRailDataLoad.test_rail_data[:project]
     TEST_RUN_ID     ||= TestRailDataLoad.test_rail_data[:test_run_id]
     IN_PROGRESS     ||= TestRailDataLoad.test_rail_data[:in_progress]
+    TYPES           ||= TestRailDataLoad.test_rail_data[:types]
     NO_TEST_RAIL    ||= 0
 
     #
@@ -42,14 +43,31 @@ module TestRail
     end
 
     #
-    # Parse results and returns Failed if this test was marked as failed.
+    # Create test run in test rail for project with name
     #
+    def self.create_test_run_with_name(name)
+      client.send_post("add_run/#{project_id}", { suite_id: test_suite_id, name: name, include_all: false, case_ids: cases_with_types})
+    end
+
+      #
+      # Parse results and returns Failed if this test was marked as failed.
+      #
     def self.get_previous_test_result(case_id)
       test_results = get_test_result(case_id).map { |status_hash| status_hash["status_id"] }
       status       = TestCaseResult::FAILED if test_results.include?(TestCaseResult::FAILED)
       status       ||= TestCaseResult::PASS if test_results.first == TestCaseResult::PASS
       status       ||= TestCaseResult::NEW
       status
+      end
+
+    #
+    # Parse results and returns previous comment.
+    #
+    def self.get_previous_comment(case_id)
+      test_comment = get_test_result(case_id).map { | hash | hash["comment"] }
+      comment = test_comment
+      comment ||= ""
+      comment
     end
 
     #
@@ -70,10 +88,25 @@ module TestRail
     end
 
     #
-    # Getting test run id value
+    # Setting test run id value
     #
     def self.test_run_id
       @test_run_id ||= TEST_RUN_ID
+    end
+
+    #
+    # Setting project id
+    #
+    def self.project_id
+      @project_id ||= PROJECT_ID
+    end
+
+
+    #
+    # Setting test suite id
+    #
+    def self.test_suite_id
+      @test_suite_id ||= TEST_SUITE
     end
 
     #
@@ -88,6 +121,14 @@ module TestRail
     #
     def self.test_run_name
       test_run_data["name"]
+    end
+
+    #
+    # Take all test types
+    #
+    def self.cases_with_types
+      types = TYPES
+      client.send_get("get_tests/#{project_id}&suite_id=#{test_suite_id}$type_id=#{types}")
     end
 
     #

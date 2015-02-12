@@ -19,7 +19,15 @@
 
 :ventures: vn|id|ph|my|sg|th #values for generating parametrized url for running test
 :environments: live_test|staging|showroom #values for generating parametrized url for running test
+:env_for_run:
 
 :in_progress: " (in progress)" #value for changing test run name for monitoring complete of test run
 
 :test_run_id: 0 #parametrized test run from "ruby run_test_run.rb <test run number>"
+
+:check_test_run_name: true
+
+:exec_command: "cucumber -p lazada.#{parameters.venture}.#{parameters.environment} TESTRAIL=1 --color -f json -o cucumber.json -t  "
+
+:types: #types for filtering from Test Rail
+
