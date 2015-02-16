@@ -13,16 +13,18 @@ module TestRail
     # Checking of correct naming of created test run and return parameters for running test run
     #
     def initialize
-      if EXEC_COMMAND
-      parameters = Connection.test_run_name.downcase.match(/(#{VENTURE_REGEX}) (#{ENVIRONMENT_REGEX})*/)
-      begin
-        @venture     = parameters[1]
-        @environment = parameters[2]
-      rescue Exception
-        raise ("The test run name is not valid. Format: 'venture env description'")
-      end
-        @command = EXEC_COMMAND
+      if CHECK_TEST_RUN_NAME
+        parameters = Connection.test_run_name.downcase.match(/(#{VENTURE_REGEX}) (#{ENVIRONMENT_REGEX})*/)
+        begin
+          @venture = parameters[1]
+          @environment = parameters[2]
+          @command = EXEC_COMMAND
+        rescue Exception
+          raise ("The test run name is not valid. Format: 'venture env description'")
         end
+      else
+        @command ||= EXEC_COMMAND
+      end
     end
   end
 end

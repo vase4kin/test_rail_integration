@@ -49,22 +49,24 @@ module TestRail
       client.send_post("add_run/#{project_id}", { suite_id: test_suite_id, name: name, include_all: false, case_ids: cases_with_types})
     end
 
-      #
-      # Parse results and returns Failed if this test was marked as failed.
-      #
+    #
+    # Parse results and returns Failed if this test was marked as failed.
+    #
     def self.get_previous_test_result(case_id)
       test_results = get_test_result(case_id).map { |status_hash| status_hash["status_id"] }
       status       = TestCaseResult::FAILED if test_results.include?(TestCaseResult::FAILED)
       status       ||= TestCaseResult::PASS if test_results.first == TestCaseResult::PASS
       status       ||= TestCaseResult::NEW
       status
-      end
+    end
 
     #
     # Parse results and returns previous comment.
     #
     def self.get_previous_comment(case_id)
-      test_comment = get_test_result(case_id).map { | hash | hash["comment"] }
+      failed_result_index = get_test_result(case_id).map { |status_hash| status_hash["status_id"] }
+      failed_result_index =
+          test_comment = get_test_result(case_id).map { | hash | hash["comment"] }
       comment = test_comment
       comment ||= ""
       comment

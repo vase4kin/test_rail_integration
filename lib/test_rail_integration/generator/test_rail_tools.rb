@@ -16,12 +16,13 @@ module TestRail
     #
     def self.generate_cucumber_execution_file(id_of_run, env = nil)
       parameters    = TestRunParameters.new
-      command       = parameters.command + Connection.cases_id(id_of_run).map { |id| "@C"+id.to_s }.join(",")
-      if env
-        env_array = env.split(" ")
-        auto_command       = parameters.command.gsub("#{parameters.venture}", "#{env_array[0]}").gsub("#{parameters.environment}", "#{env_array[1]}")
-        command = auto_command + Connection.cases_id(id_of_run).map { |id| "@C"+id.to_s }.join(",")
-      end
+      #TODO do smth with weird replacement
+      command       = parameters.command.gsub("\#{parameters.venture}", parameters.venture).gsub("\#{parameters.environment}", parameters.environment) + Connection.cases_id(id_of_run).map { |id| "@C"+id.to_s }.join(",")
+          if env
+            env_array = env.split(" ")
+            auto_command       = parameters.command.gsub("#{parameters.venture}", "#{env_array[0]}").gsub("#{parameters.environment}", "#{env_array[1]}")
+            command = auto_command + Connection.cases_id(id_of_run).map { |id| "@C"+id.to_s }.join(",")
+          end
       cucumber_file = File.new("cucumber_run.sh", "w")
       cucumber_file.chmod(0700)
       cucumber_file.write("#!/bin/sh\n")

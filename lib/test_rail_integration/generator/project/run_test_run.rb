@@ -13,9 +13,8 @@ module TestRail
   end
 
   parameters = ARGV
-  id_of_run = parameters[0]
-  environment_for_run = []
-  environment_for_run = parameters[1], parameters[2]
+  id_of_run = parameters[0].to_i
+  environment_for_run = parameters[1], parameters[2] if parameters.length > 1
   TestRailTools.prepare_config(id_of_run, environment_for_run)
 end
 
