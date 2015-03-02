@@ -22,14 +22,14 @@ module TestRail
     def initialize(test_case_id, title)
       self.test_case_id = test_case_id
       self.title        = title
-      self.previous_comment = TestRail::Connection.get_previous_comment(test_case_id)
+      self.previous_comment = TestRail::Connection.get_previous_comment(test_case_id).get_indexes_of_fails(test_case_id).last
     end
 
     #
     # Get indexes of failed results
     #
     def get_indexes_of_fails(test_case_id)
-      get_test_result(test_case_id).map.with_indexes{ | result, index | result == COMMENT[:fail] ? i : nil }
+      get_test_result(test_case_id).map.with_indexes{ | result, index | result == COMMENT[:fail] ? index : nil }
     end
 
     #
@@ -40,7 +40,7 @@ module TestRail
     def to_test_rail_api
       comment_message = "#{self.comment[:comment]} \"#{self.title}\""
       comment_message += "\n Exception : #{self.exception_message}" unless self.exception_message.nil?
-      # comment_message += "\n #{self.previous_comment}" if self.comment[:status] == COMMENT[:fail] || self.comment[:status] == COMMENT[:unchanged_pass]
+      comment_message += "\n #{self.previous_comment}" if self.comment[:status] == COMMENT[:fail] || self.comment[:status] == COMMENT[:unchanged_pass]
       if  self.comment[:status] == COMMENT_STATUS
         { comment: comment_message }
       else
