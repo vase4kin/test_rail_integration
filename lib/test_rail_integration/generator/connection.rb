@@ -63,13 +63,26 @@ module TestRail
     #
     # Parse results and returns previous comment.
     #
-    def self.get_previous_comment(case_id)
-      failed_result_index = get_test_result(case_id).map { |status_hash| status_hash["status_id"] }
-      failed_result_index =
-          test_comment = get_test_result(case_id).map { | hash | hash["comment"] }
+    def self.get_previous_comments(case_id)
+      test_comment = get_test_result(case_id).map { | hash | hash["comment"] }
       comment = test_comment
-      comment ||= ""
+      comment ||= []
       comment
+    end
+
+    #
+    # Get indexes of failed results
+    #
+    def self.get_indexes_of_fails(test_case_id)
+      get_test_result(test_case_id).map.with_index{ | result, index | result["status_id"] == TestCaseResult::COMMENT[:fail][:status] ? index : nil }    end
+
+    #
+    # Get last failed comment for test case
+    #
+    def self.get_last_failed_comment(test_case_id)
+      comments = get_previous_comments(test_case_id)
+      index = Connection.get_indexes_of_fails(test_case_id).compact.first
+      get_last_failed_comment = comments[index]
     end
 
     #
