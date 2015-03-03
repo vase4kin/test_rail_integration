@@ -4,6 +4,7 @@ require 'test_rail_integration'
 require 'thor'
 require 'test_rail_integration/generator/API_client'
 require 'test_rail_integration/generator/connection'
+require 'test_rail_integration/generator/test_run_creation'
 require 'test_rail_integration/generator/test_rail_tools'
 
 module TestRail
@@ -15,6 +16,12 @@ module TestRail
   parameters = ARGV
   id_of_run = parameters[0].to_i
   environment_for_run = parameters[1], parameters[2] if parameters.length > 1
-  TestRailTools.prepare_config(id_of_run, environment_for_run)
+  if parameters[3] == 'auto'
+    TestRailTools.change_checking_of_test_run(false)
+    TestRailTools.write_environment_for_run(environment_for_run)
+    TestRunCreation.initialize_test_run
+  else
+    TestRailTools.prepare_config(id_of_run)
+  end
 end
 

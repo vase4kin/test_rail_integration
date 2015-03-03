@@ -14,14 +14,14 @@ module TestRail
     #
     # change this method for create your own cucumber executable
     #
-    def self.generate_cucumber_execution_file(id_of_run, env)
+    def self.generate_cucumber_execution_file(id_of_run, env = nil)
       parameters = TestRunParameters.new
       #TODO do smth with weird replacement
-      if env
-        command = parameters.command + Connection.cases_id(id_of_run).map { |id| "@C"+id.to_s }.join(",")
+      if TestRunParameters::CHECK_TEST_RUN_NAME || env
+        command = parameters.command.gsub("\#{parameters.venture}", parameters.venture).gsub("\#{parameters.environment}", parameters.environment) + Connection.cases_id(id_of_run).map { |id| "@C"+id.to_s }.join(",")
         command
       else
-        command = parameters.command.gsub("\#{parameters.venture}", parameters.venture).gsub("\#{parameters.environment}", parameters.environment) + Connection.cases_id(id_of_run).map { |id| "@C"+id.to_s }.join(",")
+        command = parameters.command + Connection.cases_id(id_of_run).map { |id| "@C"+id.to_s }.join(",")
         command
       end
       cucumber_file = File.new("cucumber_run.sh", "w")
@@ -35,7 +35,7 @@ module TestRail
     # Writing test run ID into test rail data file
     #
     def self.write_test_run_id(test_run_id)
-      test_rail_data_file = File.read(TestRailDataLoad::TEST_RAIL_FILE_CONFIG_PATH).gsub(/^:test_run_id: .*/, ":test_run_id: \"#{test_run_id}\"")
+      test_rail_data_file = File.read(TestRailDataLoad::TEST_RAIL_FILE_CONFIG_PATH).gsub(/^:test_run_id:.*/, ":test_run_id: #{test_run_id}")
       config_file        = File.open(TestRailDataLoad::TEST_RAIL_FILE_CONFIG_PATH, "w")
       config_file.write (test_rail_data_file)
       config_file.close
@@ -45,14 +45,14 @@ module TestRail
     # Writing environment for running test run
     #
     def self.write_environment_for_run(env)
-      test_rail_data_file = File.read(TestRailDataLoad::TEST_RAIL_FILE_CONFIG_PATH).gsub(/^:env_for_run: .*/, ":env_for_run: #{env.join(" ")}")
+      test_rail_data_file = File.read(TestRailDataLoad::TEST_RAIL_FILE_CONFIG_PATH).gsub(/^:env_for_run:.*/, ":env_for_run: #{env.join(" ")}")
       config_file        = File.open(TestRailDataLoad::TEST_RAIL_FILE_CONFIG_PATH, "w")
       config_file.write (test_rail_data_file)
       config_file.close
     end
 
     def self.change_checking_of_test_run(value = true)
-      test_rail_data_file = File.read(TestRailDataLoad::TEST_RAIL_FILE_CONFIG_PATH).gsub(/^:check_test_run_name:/, ":check_test_run_name: #{value}")
+      test_rail_data_file = File.read(TestRailDataLoad::TEST_RAIL_FILE_CONFIG_PATH).gsub(/^:check_test_run_name:.*/, ":check_test_run_name: #{value}")
       config_file        = File.open(TestRailDataLoad::TEST_RAIL_FILE_CONFIG_PATH, "w")
       config_file.write (test_rail_data_file)
       config_file.close

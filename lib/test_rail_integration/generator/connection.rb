@@ -74,7 +74,8 @@ module TestRail
     # Get indexes of failed results
     #
     def self.get_indexes_of_fails(test_case_id)
-      get_test_result(test_case_id).map.with_index{ | result, index | result["status_id"] == TestCaseResult::COMMENT[:fail][:status] ? index : nil }    end
+      get_test_result(test_case_id).map.with_index{ | result, index | result["status_id"] == TestCaseResult::COMMENT[:fail][:status] ? index : nil }
+    end
 
     #
     # Get last failed comment for test case
@@ -82,7 +83,7 @@ module TestRail
     def self.get_last_failed_comment(test_case_id)
       comments = get_previous_comments(test_case_id)
       index = Connection.get_indexes_of_fails(test_case_id).compact.first
-      get_last_failed_comment = comments[index]
+      comments[index]
     end
 
     #
@@ -143,7 +144,9 @@ module TestRail
     #
     def self.cases_with_types
       types = TYPES
-      client.send_get("get_tests/#{project_id}&suite_id=#{test_suite_id}$type_id=#{types}")
+      cases = client.send_get("get_cases/#{project_id}&suite_id=#{test_suite_id}&type_id=#{types}")
+      case_ids = cases.map{ | test_case | test_case["id"] }
+      case_ids
     end
 
     #
@@ -155,5 +158,29 @@ module TestRail
       new_name = test_run_name.gsub(IN_PROGRESS, "")
       client.send_post("update_run/#{test_run_id}", { name: new_name })
     end
+
+    #
+    # Send request for creation test run with name
+    # ("add_run/3", {suite_id: 3, name "New test run", include_all: false, case_ids: C31, C32, C33}
+    #
+    def self.create_new_test_run_with_name
+      client.send_post("add_run/#{project_id}", { suite_id: test_suite_id, name: generate_test_run_name, include_all: false, case_ids: cases_with_types })
+
+    end
+
+    #
+    # Get all test runs for project
+    #
+    def self.get_test_runs
+      client.send_get("get_runs/#{project_id}")
+    end
+
+    #
+    # Generate name for test run with date
+    #
+    def self.generate_test_run_name
+      "Automation testrun #{Time.now.strftime("%d/%m/%Y")}"
+    end
+
   end
 end

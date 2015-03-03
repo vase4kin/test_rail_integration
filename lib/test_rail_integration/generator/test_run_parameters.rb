@@ -14,10 +14,10 @@ module TestRail
     #
     def initialize
       if CHECK_TEST_RUN_NAME
-        parameters = Connection.test_run_name.downcase.match(/(#{VENTURE_REGEX}) (#{ENVIRONMENT_REGEX})*/)
-        TestRailTools::write_environment_for_run(parameters[0].split(" "))
-        test_run_environment = TestRail::TestRailDataLoad.test_rail_data[:env_for_run].split(" ")
         begin
+          parameters = Connection.test_run_name.downcase.match(/(#{VENTURE_REGEX}) (#{ENVIRONMENT_REGEX})*/)
+          TestRailTools::write_environment_for_run(parameters[0].split(" "))
+          test_run_environment = TestRail::TestRailDataLoad.test_rail_data[:env_for_run].split(" ")
           @venture = test_run_environment[0]
           @environment = test_run_environment[1]
           @command = EXEC_COMMAND
@@ -25,9 +25,11 @@ module TestRail
           raise ("The test run name is not valid. Format: 'venture env description'")
         end
       else
-        test_run_environment = TestRail::TestRailDataLoad.test_rail_data[:env_for_run].split(" ")
-        @venture = test_run_environment[0]
-        @environment = test_run_environment[1]
+        unless TestRail::TestRailDataLoad.test_rail_data[:env_for_run].nil?
+          test_run_environment = TestRail::TestRailDataLoad.test_rail_data[:env_for_run].split(" ")
+          @venture = test_run_environment[0]
+          @environment = test_run_environment[1]
+        end
         @command ||= EXEC_COMMAND
       end
     end
