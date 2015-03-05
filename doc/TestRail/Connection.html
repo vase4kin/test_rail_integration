@@ -72,15 +72,33 @@
     
     <li ><a href="#method-c-cases_id">::cases_id</a>
     
+    <li ><a href="#method-c-cases_with_types">::cases_with_types</a>
+    
     <li ><a href="#method-c-change_test_run_name">::change_test_run_name</a>
     
     <li ><a href="#method-c-client">::client</a>
     
     <li ><a href="#method-c-commit_test_result">::commit_test_result</a>
     
+    <li ><a href="#method-c-create_new_test_run_with_name">::create_new_test_run_with_name</a>
+    
+    <li ><a href="#method-c-create_test_run_with_name">::create_test_run_with_name</a>
+    
+    <li ><a href="#method-c-generate_test_run_name">::generate_test_run_name</a>
+    
+    <li ><a href="#method-c-get_indexes_of_fails">::get_indexes_of_fails</a>
+    
+    <li ><a href="#method-c-get_last_failed_comment">::get_last_failed_comment</a>
+    
+    <li ><a href="#method-c-get_previous_comments">::get_previous_comments</a>
+    
     <li ><a href="#method-c-get_previous_test_result">::get_previous_test_result</a>
     
     <li ><a href="#method-c-get_test_result">::get_test_result</a>
+    
+    <li ><a href="#method-c-get_test_runs">::get_test_runs</a>
+    
+    <li ><a href="#method-c-project_id">::project_id</a>
     
     <li ><a href="#method-c-test_run_data">::test_run_data</a>
     
@@ -89,6 +107,8 @@
     <li ><a href="#method-c-test_run_id-3D">::test_run_id=</a>
     
     <li ><a href="#method-c-test_run_name">::test_run_name</a>
+    
+    <li ><a href="#method-c-test_suite_id">::test_suite_id</a>
     
   </ul>
 </div>
@@ -145,10 +165,46 @@
 
           
           <div class="method-source-code" id="cases_id-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 61</span>
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 95</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">cases_id</span>(<span class="ruby-identifier">test_run_id</span>)
   <span class="ruby-identifier">cases</span> = <span class="ruby-identifier">client</span>.<span class="ruby-identifier">send_get</span>(<span class="ruby-node">&quot;get_tests/#{test_run_id}&quot;</span>)
   <span class="ruby-identifier">cases</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">test_case</span><span class="ruby-operator">|</span> <span class="ruby-identifier">test_case</span>[<span class="ruby-string">&quot;case_id&quot;</span>] }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-cases_with_types" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cases_with_types</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Take all test types</p>
+          
+          
+
+          
+          <div class="method-source-code" id="cases_with_types-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 146</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">cases_with_types</span>
+  <span class="ruby-identifier">types</span> = <span class="ruby-constant">TYPES</span>
+  <span class="ruby-identifier">cases</span> = <span class="ruby-identifier">client</span>.<span class="ruby-identifier">send_get</span>(<span class="ruby-node">&quot;get_cases/#{project_id}&amp;suite_id=#{test_suite_id}&amp;type_id=#{types}&quot;</span>)
+  <span class="ruby-identifier">case_ids</span> = <span class="ruby-identifier">cases</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">test_case</span><span class="ruby-operator">|</span> <span class="ruby-identifier">test_case</span>[<span class="ruby-string">&quot;id&quot;</span>] }
+  <span class="ruby-identifier">case_ids</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -164,7 +220,7 @@
         
         <div class="method-heading">
           <span class="method-name">change_test_run_name</span><span
-            class="method-args">()</span>
+            class="method-args">(run_id = test_run_id)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -182,10 +238,10 @@
 
           
           <div class="method-source-code" id="change_test_run_name-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 99</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">change_test_run_name</span>
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 158</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">change_test_run_name</span>(<span class="ruby-identifier">run_id</span> = <span class="ruby-identifier">test_run_id</span>)
   <span class="ruby-identifier">new_name</span> = <span class="ruby-identifier">test_run_name</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-constant">IN_PROGRESS</span>, <span class="ruby-string">&quot;&quot;</span>)
-  <span class="ruby-identifier">client</span>.<span class="ruby-identifier">send_post</span>(<span class="ruby-node">&quot;update_run/#{test_run_id}&quot;</span>, { <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">new_name</span> })
+  <span class="ruby-identifier">client</span>.<span class="ruby-identifier">send_post</span>(<span class="ruby-node">&quot;update_run/#{run_id}&quot;</span>, {<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">new_name</span>})
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -272,6 +328,211 @@ comment: “Test passed” )</p>
       </div>
 
     
+      <div id="method-c-create_new_test_run_with_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_new_test_run_with_name</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Send request for creation test run with name (“add_run/3”, {suite_id: 3,
+name “New test run”, include_all: false, case_ids: C31, C32, C33}</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_new_test_run_with_name-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 167</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create_new_test_run_with_name</span>
+  <span class="ruby-identifier">client</span>.<span class="ruby-identifier">send_post</span>(<span class="ruby-node">&quot;add_run/#{project_id}&quot;</span>, {<span class="ruby-identifier">suite_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">test_suite_id</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">generate_test_run_name</span>, <span class="ruby-identifier">include_all</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>, <span class="ruby-identifier">case_ids</span><span class="ruby-operator">:</span> <span class="ruby-identifier">cases_with_types</span>})
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-create_test_run_with_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_test_run_with_name</span><span
+            class="method-args">(name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Create test run in test rail for project with name</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_test_run_with_name-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 48</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create_test_run_with_name</span>(<span class="ruby-identifier">name</span>)
+  <span class="ruby-identifier">client</span>.<span class="ruby-identifier">send_post</span>(<span class="ruby-node">&quot;add_run/#{project_id}&quot;</span>, {<span class="ruby-identifier">suite_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">test_suite_id</span>, <span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">include_all</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>, <span class="ruby-identifier">case_ids</span><span class="ruby-operator">:</span> <span class="ruby-identifier">cases_with_types</span>})
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-generate_test_run_name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">generate_test_run_name</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Generate name for test run with date</p>
+          
+          
+
+          
+          <div class="method-source-code" id="generate_test_run_name-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 181</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">generate_test_run_name</span>
+  <span class="ruby-node">&quot;Test run #{Time.now.strftime(&quot;%d/%m/%Y&quot;)}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_indexes_of_fails" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_indexes_of_fails</span><span
+            class="method-args">(test_case_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Get indexes of failed results</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_indexes_of_fails-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_indexes_of_fails</span>(<span class="ruby-identifier">test_case_id</span>)
+  <span class="ruby-identifier">indexes</span> = <span class="ruby-identifier">get_test_result</span>(<span class="ruby-identifier">test_case_id</span>).<span class="ruby-identifier">map</span>.<span class="ruby-identifier">with_index</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">result</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span> <span class="ruby-identifier">result</span>[<span class="ruby-string">&quot;status_id&quot;</span>] <span class="ruby-operator">==</span> <span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">COMMENT</span>[<span class="ruby-value">:fail</span>][<span class="ruby-value">:status</span>] <span class="ruby-operator">?</span> <span class="ruby-identifier">index</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span> }
+  <span class="ruby-identifier">indexes</span>.<span class="ruby-identifier">compact</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_last_failed_comment" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_last_failed_comment</span><span
+            class="method-args">(test_case_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Get last failed comment for test case</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_last_failed_comment-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 84</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_last_failed_comment</span>(<span class="ruby-identifier">test_case_id</span>)
+  <span class="ruby-identifier">comments</span> = <span class="ruby-identifier">get_previous_comments</span>(<span class="ruby-identifier">test_case_id</span>)
+  <span class="ruby-identifier">index</span> = <span class="ruby-constant">Connection</span>.<span class="ruby-identifier">get_indexes_of_fails</span>(<span class="ruby-identifier">test_case_id</span>).<span class="ruby-identifier">first</span>
+  <span class="ruby-identifier">comments</span>[<span class="ruby-identifier">index</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_previous_comments" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_previous_comments</span><span
+            class="method-args">(case_id)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Parse results and returns previous comment.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_previous_comments-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 66</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_previous_comments</span>(<span class="ruby-identifier">case_id</span>)
+  <span class="ruby-identifier">test_comment</span> = <span class="ruby-identifier">get_test_result</span>(<span class="ruby-identifier">case_id</span>).<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">hash</span><span class="ruby-operator">|</span> <span class="ruby-identifier">hash</span>[<span class="ruby-string">&quot;comment&quot;</span>] }
+  <span class="ruby-identifier">comment</span> = <span class="ruby-identifier">test_comment</span>
+  <span class="ruby-identifier">comment</span> <span class="ruby-operator">||=</span> []
+  <span class="ruby-identifier">comment</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-c-get_previous_test_result" class="method-detail ">
         
         <div class="method-heading">
@@ -291,12 +552,12 @@ comment: “Test passed” )</p>
 
           
           <div class="method-source-code" id="get_previous_test_result-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 48</span>
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 55</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_previous_test_result</span>(<span class="ruby-identifier">case_id</span>)
   <span class="ruby-identifier">test_results</span> = <span class="ruby-identifier">get_test_result</span>(<span class="ruby-identifier">case_id</span>).<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">status_hash</span><span class="ruby-operator">|</span> <span class="ruby-identifier">status_hash</span>[<span class="ruby-string">&quot;status_id&quot;</span>] }
-  <span class="ruby-identifier">status</span>       = <span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">FAILED</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">test_results</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">FAILED</span>)
-  <span class="ruby-identifier">status</span>       <span class="ruby-operator">||=</span> <span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">PASS</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">test_results</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">PASS</span>
-  <span class="ruby-identifier">status</span>       <span class="ruby-operator">||=</span> <span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">NEW</span>
+  <span class="ruby-identifier">status</span> = <span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">FAILED</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">test_results</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">FAILED</span>)
+  <span class="ruby-identifier">status</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">PASS</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">test_results</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">PASS</span>
+  <span class="ruby-identifier">status</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">NEW</span>
   <span class="ruby-identifier">status</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -344,11 +605,77 @@ comment: “Test passed” )</p>
       </div>
 
     
+      <div id="method-c-get_test_runs" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_test_runs</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Get all test runs for project</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_test_runs-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 174</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_test_runs</span>
+  <span class="ruby-identifier">client</span>.<span class="ruby-identifier">send_get</span>(<span class="ruby-node">&quot;get_runs/#{project_id}&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-project_id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">project_id</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Setting project id</p>
+          
+          
+
+          
+          <div class="method-source-code" id="project_id-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 117</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">project_id</span>
+  <span class="ruby-ivar">@project_id</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">PROJECT_ID</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-c-test_run_data" class="method-detail ">
         
         <div class="method-heading">
           <span class="method-name">test_run_data</span><span
-            class="method-args">()</span>
+            class="method-args">(id_of_run=test_run_id)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -363,9 +690,9 @@ comment: “Test passed” )</p>
 
           
           <div class="method-source-code" id="test_run_data-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 83</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">test_run_data</span>
-  <span class="ruby-identifier">client</span>.<span class="ruby-identifier">send_get</span>(<span class="ruby-node">&quot;get_run/#{test_run_id}&quot;</span>)
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 132</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">test_run_data</span>(<span class="ruby-identifier">id_of_run</span>=<span class="ruby-identifier">test_run_id</span>)
+  <span class="ruby-identifier">client</span>.<span class="ruby-identifier">send_get</span>(<span class="ruby-node">&quot;get_run/#{id_of_run}&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -390,13 +717,13 @@ comment: “Test passed” )</p>
 
         <div class="method-description">
           
-          <p>Getting test run id value</p>
+          <p>Setting test run id value</p>
           
           
 
           
           <div class="method-source-code" id="test_run_id-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 76</span>
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 110</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">test_run_id</span>
   <span class="ruby-ivar">@test_run_id</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">TEST_RUN_ID</span>
 <span class="ruby-keyword">end</span></pre>
@@ -429,7 +756,7 @@ comment: “Test passed” )</p>
 
           
           <div class="method-source-code" id="test_run_id-3D-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 69</span>
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 103</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">test_run_id=</span>(<span class="ruby-identifier">test_run_id</span>)
   <span class="ruby-ivar">@test_run_id</span> = <span class="ruby-identifier">test_run_id</span>
 <span class="ruby-keyword">end</span></pre>
@@ -447,7 +774,7 @@ comment: “Test passed” )</p>
         
         <div class="method-heading">
           <span class="method-name">test_run_name</span><span
-            class="method-args">()</span>
+            class="method-args">(id_of_run=test_run_id)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -462,9 +789,42 @@ comment: “Test passed” )</p>
 
           
           <div class="method-source-code" id="test_run_name-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 90</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">test_run_name</span>
-  <span class="ruby-identifier">test_run_data</span>[<span class="ruby-string">&quot;name&quot;</span>]
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 139</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">test_run_name</span>(<span class="ruby-identifier">id_of_run</span>=<span class="ruby-identifier">test_run_id</span>)
+  <span class="ruby-identifier">test_run_data</span>(<span class="ruby-identifier">id_of_run</span>)[<span class="ruby-string">&quot;name&quot;</span>]
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-test_suite_id" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">test_suite_id</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Setting test suite id</p>
+          
+          
+
+          
+          <div class="method-source-code" id="test_suite_id-source">
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/connection.rb, line 125</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">test_suite_id</span>
+  <span class="ruby-ivar">@test_suite_id</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">TEST_SUITE</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

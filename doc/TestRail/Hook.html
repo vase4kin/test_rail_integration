@@ -131,7 +131,7 @@
 
           
           <div class="method-source-code" id="failed_result-3F-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_hooks.rb, line 29</span>
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_hooks.rb, line 33</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">failed_result?</span>(<span class="ruby-identifier">result</span>)
   <span class="ruby-operator">!</span><span class="ruby-identifier">result</span>
 <span class="ruby-keyword">end</span></pre>
@@ -164,7 +164,7 @@
 
           
           <div class="method-source-code" id="passed_result-3F-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_hooks.rb, line 33</span>
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_hooks.rb, line 37</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">passed_result?</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">prev_result</span>)
   <span class="ruby-identifier">result</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">prev_result</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">FAILED</span>
 <span class="ruby-keyword">end</span></pre>
@@ -197,7 +197,7 @@
 
           
           <div class="method-source-code" id="unchanged_pass_result-3F-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_hooks.rb, line 37</span>
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_hooks.rb, line 41</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">unchanged_pass_result?</span>(<span class="ruby-identifier">result</span>, <span class="ruby-identifier">prev_result</span>)
   <span class="ruby-identifier">result</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">prev_result</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">FAILED</span>
 <span class="ruby-keyword">end</span></pre>
@@ -224,31 +224,33 @@
 
         <div class="method-description">
           
-          
+          <p>Updating Test Rail according to logic</p>
           
           
 
           
           <div class="method-source-code" id="update_test_rail-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_hooks.rb, line 9</span>
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_hooks.rb, line 11</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">update_test_rail</span>(<span class="ruby-identifier">scenario</span>)
   <span class="ruby-identifier">test_case_id</span> = <span class="ruby-identifier">scenario</span>.<span class="ruby-identifier">source_tag_names</span>.<span class="ruby-identifier">find</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">TEST_RAIL_ID_REGEX</span>) }[<span class="ruby-value">2</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]
 
-  <span class="ruby-identifier">prev_result</span>              = <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">Connection</span>.<span class="ruby-identifier">get_previous_test_result</span>(<span class="ruby-identifier">test_case_id</span>)
-  <span class="ruby-identifier">both_run_result</span>          = <span class="ruby-identifier">scenario</span>.<span class="ruby-identifier">passed?</span> <span class="ruby-operator">||</span> <span class="ruby-constant">RunInformation</span>.<span class="ruby-identifier">second_run_result</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-  <span class="ruby-identifier">test_case_result</span>         = <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">test_case_id</span>, <span class="ruby-identifier">scenario</span>.<span class="ruby-identifier">title</span>)
+  <span class="ruby-identifier">prev_result</span> = <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">Connection</span>.<span class="ruby-identifier">get_previous_test_result</span>(<span class="ruby-identifier">test_case_id</span>)
+  <span class="ruby-identifier">run_result</span> = <span class="ruby-identifier">scenario</span>.<span class="ruby-identifier">passed?</span>
+  <span class="ruby-identifier">test_case_result</span> = <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">test_case_id</span>, <span class="ruby-identifier">scenario</span>.<span class="ruby-identifier">title</span>)
 
-  <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">comment</span> = <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">COMMENT</span>[<span class="ruby-value">:pass</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">passed_result?</span>(<span class="ruby-identifier">both_run_result</span>, <span class="ruby-identifier">prev_result</span>)
-  <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">comment</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">COMMENT</span>[<span class="ruby-value">:unchanged_pass</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">unchanged_pass_result?</span>(<span class="ruby-identifier">both_run_result</span>, <span class="ruby-identifier">prev_result</span>)
+  <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">comment</span> = <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">COMMENT</span>[<span class="ruby-value">:pass</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">passed_result?</span>(<span class="ruby-identifier">run_result</span>, <span class="ruby-identifier">prev_result</span>)
+  <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">comment</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">COMMENT</span>[<span class="ruby-value">:unchanged_pass</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">unchanged_pass_result?</span>(<span class="ruby-identifier">run_result</span>, <span class="ruby-identifier">prev_result</span>)
 
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">failed_result?</span>(<span class="ruby-identifier">both_run_result</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">failed_result?</span>(<span class="ruby-identifier">run_result</span>)
     <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">comment</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">COMMENT</span>[<span class="ruby-value">:fail</span>]
     <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">exception_message</span> = <span class="ruby-identifier">scenario</span>.<span class="ruby-identifier">steps</span>.<span class="ruby-identifier">exception</span> <span class="ruby-keyword">rescue</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">assign_to</span> = <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">TestCaseResult</span><span class="ruby-operator">::</span><span class="ruby-constant">ASSIGN_TO</span>
   <span class="ruby-keyword">end</span>
 
-  <span class="ruby-identifier">raise</span>(<span class="ruby-node">&quot;Invalide test case result : scenario.passed? #{scenario.passed?}, both_run_result? #{both_run_result}  prev_result? #{prev_result}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">comment</span>.<span class="ruby-identifier">nil?</span>
+  <span class="ruby-identifier">raise</span>(<span class="ruby-node">&quot;Invalid test case result : scenario.passed? #{scenario.passed?}, prev_result? #{prev_result}, run_result? #{run_result}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">test_case_result</span>.<span class="ruby-identifier">comment</span>.<span class="ruby-identifier">nil?</span>
 
   <span class="ruby-constant">TestRail</span><span class="ruby-operator">::</span><span class="ruby-constant">Connection</span>.<span class="ruby-identifier">commit_test_result</span>(<span class="ruby-identifier">test_case_result</span>)
+
 <span class="ruby-keyword">end</span></pre>
           </div>
           

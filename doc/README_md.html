@@ -112,16 +112,36 @@ and Ruby automation framework Cucumber+Watir</p>
 
 <h2 id="label-Usage">Usage<span><a href="#label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h2>
 
-<p>After installation type “test_rail_interaction perform”. This command
-generate executable file run_test_run.rb. You should run this file with
-parameter - number on test run in <a href="TestRail.html">TestRail</a> Fill
-all data in test_rail_data.yml. Next time run_test_run.rb
-&lt;run_number&gt; will generate cucumber executable file. For perform this
-actions in Jenkins just create Execute shell “ruby run_test_run.rb
-$Testrun_id ; ./cucumber_run.sh;” where $Testrun_id its string parameter
-for parameterized builds. Add <a
+<p>After installation type</p>
+
+<pre class="ruby"><span class="ruby-identifier">test_rail_integration</span> <span class="ruby-identifier">perform</span>
+</pre>
+
+<p>This command generate executable file run_test_run.rb. You should run this
+file with parameter - number on test run in <a
+href="TestRail.html">TestRail</a> Fill all data in test_rail_data.yml.</p>
+
+<p>Add <a
 href="TestRail/Hook.html#method-c-update_test_rail">TestRail::Hook.update_test_rail</a>
-into after hook.</p>
+into “ after |scenario| ” hook.</p>
+
+<p>For standard running use command</p>
+
+<pre>ruby run_test_run.rb &lt;run_number&gt;</pre>
+
+<p>For generate test run by default use</p>
+
+<pre>ruby run_test_run.rb auto &lt;1st parameter&gt; &lt;2nd parameter&gt;</pre>
+
+<p>Command that will generated is placed in test_rail_data.yml :exec_command:</p>
+
+<p>After running command for generating executable file run</p>
+
+<pre>./cucumber_run.sh</pre>
+
+<p>For perform this actions in Jenkins just create Execute shell “ruby
+run_test_run.rb $Testrun_id ; ./cucumber_run.sh;” where $Testrun_id its
+string parameter for parameterized builds.</p>
 
 <h2 id="label-Contributing">Contributing<span><a href="#label-Contributing">&para;</a> <a href="#top">&uarr;</a></span></h2>
 <ol><li>

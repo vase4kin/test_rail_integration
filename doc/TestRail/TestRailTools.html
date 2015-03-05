@@ -114,7 +114,7 @@
         
         <div class="method-heading">
           <span class="method-name">generate_cucumber_execution_file</span><span
-            class="method-args">(id_of_run)</span>
+            class="method-args">(id_of_run, env = nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -128,8 +128,8 @@
 <p><a
 href="TestRailTools.html#method-c-generate_cucumber_execution_file">::generate_cucumber_execution_file</a>(2)</p>
 
-<p>cucumber -p lazada.vn.live_test TESTRAIL=1 –color -f json -o cucumber.json
--t  @C6162,@C6163,@C6164</p>
+<p>cucumber -p profile.vn.live_test TESTRAIL=1 –color -f json -o cucumber.json
+-t  @C666,@C777,@C555</p>
 
 <p>change this method for create your own cucumber executable</p>
           
@@ -138,9 +138,10 @@ href="TestRailTools.html#method-c-generate_cucumber_execution_file">::generate_c
           
           <div class="method-source-code" id="generate_cucumber_execution_file-source">
             <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_tools.rb, line 17</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">generate_cucumber_execution_file</span>(<span class="ruby-identifier">id_of_run</span>)
-  <span class="ruby-identifier">parameters</span>    = <span class="ruby-constant">TestRunParameters</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-identifier">command</span>       = <span class="ruby-node">&quot;cucumber -p lazada.#{parameters.venture}.#{parameters.environment} TESTRAIL=1 --color -f json -o cucumber.json -t  &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Connection</span>.<span class="ruby-identifier">cases_id</span>(<span class="ruby-identifier">id_of_run</span>).<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span> <span class="ruby-string">&quot;@C&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;,&quot;</span>)
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">generate_cucumber_execution_file</span>(<span class="ruby-identifier">id_of_run</span>, <span class="ruby-identifier">env</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">parameters</span> = <span class="ruby-constant">TestRunParameters</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">env</span>)
+  <span class="ruby-comment">#TODO do smth with weird replacement</span>
+  <span class="ruby-identifier">command</span> = <span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">command</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;\#{parameters.venture}&quot;</span>, <span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">venture</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;\#{parameters.environment}&quot;</span>, <span class="ruby-identifier">parameters</span>.<span class="ruby-identifier">environment</span>) <span class="ruby-operator">+</span> <span class="ruby-constant">Connection</span>.<span class="ruby-identifier">cases_id</span>(<span class="ruby-identifier">id_of_run</span>).<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span> <span class="ruby-string">&quot;@C&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-string">&quot;,&quot;</span>)
   <span class="ruby-identifier">cucumber_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>(<span class="ruby-string">&quot;cucumber_run.sh&quot;</span>, <span class="ruby-string">&quot;w&quot;</span>)
   <span class="ruby-identifier">cucumber_file</span>.<span class="ruby-identifier">chmod</span>(<span class="ruby-value">0700</span>)
   <span class="ruby-identifier">cucumber_file</span>.<span class="ruby-identifier">write</span>(<span class="ruby-node">&quot;#!/bin/sh\n&quot;</span>)
@@ -161,7 +162,7 @@ href="TestRailTools.html#method-c-generate_cucumber_execution_file">::generate_c
         
         <div class="method-heading">
           <span class="method-name">prepare_config</span><span
-            class="method-args">(run_id)</span>
+            class="method-args">(run_id, env = nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -176,11 +177,11 @@ href="TestRailTools.html#method-c-generate_cucumber_execution_file">::generate_c
 
           
           <div class="method-source-code" id="prepare_config-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_tools.rb, line 40</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">prepare_config</span>(<span class="ruby-identifier">run_id</span>)
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_tools.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">prepare_config</span>(<span class="ruby-identifier">run_id</span>, <span class="ruby-identifier">env</span> = <span class="ruby-keyword">nil</span>)
   <span class="ruby-constant">Connection</span>.<span class="ruby-identifier">test_run_id</span> = <span class="ruby-identifier">run_id</span>
   <span class="ruby-identifier">write_test_run_id</span>(<span class="ruby-identifier">run_id</span>)
-  <span class="ruby-identifier">generate_cucumber_execution_file</span>(<span class="ruby-identifier">run_id</span>)
+  <span class="ruby-identifier">generate_cucumber_execution_file</span>(<span class="ruby-identifier">run_id</span>, <span class="ruby-identifier">env</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -211,10 +212,10 @@ href="TestRailTools.html#method-c-generate_cucumber_execution_file">::generate_c
 
           
           <div class="method-source-code" id="write_test_run_id-source">
-            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_tools.rb, line 30</span>
+            <pre><span class="ruby-comment"># File lib/test_rail_integration/generator/test_rail_tools.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">write_test_run_id</span>(<span class="ruby-identifier">test_run_id</span>)
-  <span class="ruby-identifier">test_rail_data_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">CONFIG_PATH</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/^:test_run_id: \d+/</span>, <span class="ruby-node">&quot;:test_run_id: #{test_run_id}&quot;</span>)
-  <span class="ruby-identifier">config_file</span>        = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">CONFIG_PATH</span>, <span class="ruby-string">&quot;w&quot;</span>)
+  <span class="ruby-identifier">test_rail_data_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-constant">TestRailDataLoad</span><span class="ruby-operator">::</span><span class="ruby-constant">TEST_RAIL_FILE_CONFIG_PATH</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp">/^:test_run_id:.*/</span>, <span class="ruby-node">&quot;:test_run_id: #{test_run_id}&quot;</span>)
+  <span class="ruby-identifier">config_file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-constant">TestRailDataLoad</span><span class="ruby-operator">::</span><span class="ruby-constant">TEST_RAIL_FILE_CONFIG_PATH</span>, <span class="ruby-string">&quot;w&quot;</span>)
   <span class="ruby-identifier">config_file</span>.<span class="ruby-identifier">write</span> (<span class="ruby-identifier">test_rail_data_file</span>)
   <span class="ruby-identifier">config_file</span>.<span class="ruby-identifier">close</span>
 <span class="ruby-keyword">end</span></pre>
