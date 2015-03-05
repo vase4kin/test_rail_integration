@@ -9,12 +9,12 @@ module TestRail
     def self.update_test_rail(scenario)
       test_case_id = scenario.source_tag_names.find { |e| e.match(TEST_RAIL_ID_REGEX) }[2..-1]
 
-      prev_result              = TestRail::Connection.get_previous_test_result(test_case_id)
-      run_result               = scenario.passed?
-      test_case_result         = TestRail::TestCaseResult.new(test_case_id, scenario.title)
+      prev_result = TestRail::Connection.get_previous_test_result(test_case_id)
+      run_result = scenario.passed?
+      test_case_result = TestRail::TestCaseResult.new(test_case_id, scenario.title)
 
-      test_case_result.comment = TestRail::TestCaseResult::COMMENT[:pass] if passed_result?( run_result, prev_result )
-      test_case_result.comment ||= TestRail::TestCaseResult::COMMENT[:unchanged_pass] if unchanged_pass_result?( run_result, prev_result )
+      test_case_result.comment = TestRail::TestCaseResult::COMMENT[:pass] if passed_result?(run_result, prev_result)
+      test_case_result.comment ||= TestRail::TestCaseResult::COMMENT[:unchanged_pass] if unchanged_pass_result?(run_result, prev_result)
 
       if failed_result?(run_result)
         test_case_result.comment ||= TestRail::TestCaseResult::COMMENT[:fail]
@@ -28,15 +28,15 @@ module TestRail
 
     end
 
-    def self.failed_result?( result )
+    def self.failed_result?(result)
       !result
     end
 
-    def self.passed_result?( result, prev_result )
+    def self.passed_result?(result, prev_result)
       result && prev_result != TestRail::TestCaseResult::FAILED
     end
 
-    def self.unchanged_pass_result?( result, prev_result )
+    def self.unchanged_pass_result?(result, prev_result)
       result && prev_result == TestRail::TestCaseResult::FAILED
     end
 

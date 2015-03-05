@@ -2,7 +2,7 @@ require_relative 'API_client'
 
 module TestRail
   class TestRunParameters
-    VENTURE_REGEX     ||= TestRail::TestRailDataLoad.test_rail_data[:ventures]
+    VENTURE_REGEX ||= TestRail::TestRailDataLoad.test_rail_data[:ventures]
     ENVIRONMENT_REGEX ||= TestRail::TestRailDataLoad.test_rail_data[:environments]
     CHECK_TEST_RUN_NAME ||= TestRail::TestRailDataLoad.test_rail_data[:check_test_run_name]
     EXEC_COMMAND ||= TestRail::TestRailDataLoad.test_rail_data[:exec_command]
@@ -12,26 +12,18 @@ module TestRail
     #
     # Checking of correct naming of created test run and return parameters for running test run
     #
-    def initialize
-      if CHECK_TEST_RUN_NAME
-        begin
-          parameters = Connection.test_run_name.downcase.match(/(#{VENTURE_REGEX}) (#{ENVIRONMENT_REGEX})*/)
-          TestRailTools::write_environment_for_run(parameters[0].split(" "))
-          test_run_environment = TestRail::TestRailDataLoad.test_rail_data[:env_for_run].split(" ")
-          @venture = test_run_environment[0]
-          @environment = test_run_environment[1]
-          @command = EXEC_COMMAND
-        rescue Exception
-          raise ("The test run name is not valid. Format: 'venture env description'")
+    def initialize(env=nil)
+      @venture = ""
+      @environment = ""
+      if env
+        if env[0]
+          @venture = env[0] if env[0].match(/(#{VENTURE_REGEX})/)
         end
-      else
-        unless TestRail::TestRailDataLoad.test_rail_data[:env_for_run].nil?
-          test_run_environment = TestRail::TestRailDataLoad.test_rail_data[:env_for_run].split(" ")
-          @venture = test_run_environment[0]
-          @environment = test_run_environment[1]
+        if env[1]
+          @environment = env[1] if env[1].match(/(#{ENVIRONMENT_REGEX})/)
         end
-        @command ||= EXEC_COMMAND
       end
+      @command = EXEC_COMMAND
     end
   end
 end

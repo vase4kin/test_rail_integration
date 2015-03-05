@@ -14,14 +14,15 @@ module TestRail
   end
 
   parameters = ARGV
-  id_of_run = parameters[0].to_i
-  environment_for_run = parameters[1], parameters[2] if parameters.length > 1
-  if parameters[3] == 'auto'
-    TestRailTools.change_checking_of_test_run(false)
-    TestRailTools.write_environment_for_run(environment_for_run)
-    TestRunCreation.initialize_test_run
+  #TODO Make Hash instead of array for parameters
+  if parameters[0] == 'auto'
+    environment_for_run = parameters[1], parameters[2]
+    id_of_run = TestRunCreation.initialize_test_run
   else
-    TestRailTools.prepare_config(id_of_run)
+    id_of_run = parameters[0].to_i
+    name_of_environment = Connection.test_run_name(id_of_run).downcase.match(/(#{TestRunParameters::VENTURE_REGEX}) (#{TestRunParameters::ENVIRONMENT_REGEX})*/)
+    environment_for_run = name_of_environment[1], name_of_environment[2] if name_of_environment
   end
+  TestRailTools.prepare_config(id_of_run, environment_for_run)
 end
 

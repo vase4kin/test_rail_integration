@@ -14,8 +14,8 @@ require 'json'
 
 module TestRail
   class APIClient
-    @url      = ''
-    @user     = ''
+    @url = ''
+    @user = ''
     @password = ''
 
     attr_accessor :user
@@ -26,8 +26,8 @@ module TestRail
       unless base_url.match(/\/$/)
         base_url += '/'
       end
-      @url      = base_url + 'index.php?/api/v2/'
-      @user     = connection_data[:username]
+      @url = base_url + 'index.php?/api/v2/'
+      @user = connection_data[:username]
       @password = connection_data[:password]
     end
 
@@ -67,7 +67,7 @@ module TestRail
     def _send_request(method, uri, data)
       url = URI.parse(@url + uri)
       if method == 'POST'
-        request      = Net::HTTP::Post.new(url.path + '?' + url.query)
+        request = Net::HTTP::Post.new(url.path + '?' + url.query)
         request.body = JSON.dump(data)
       else
         request = Net::HTTP::Get.new(url.path + '?' + url.query)
@@ -77,7 +77,7 @@ module TestRail
 
       conn = Net::HTTP.new(url.host, url.port)
       if url.scheme == 'https'
-        conn.use_ssl     = true
+        conn.use_ssl = true
         conn.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
       response = conn.request(request)
