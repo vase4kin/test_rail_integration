@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
 
 require 'test_rail_integration/cli'
+
 TestRailIntegration::CLI.start
