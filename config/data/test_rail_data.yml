@@ -1,0 +1,31 @@
+# For testing purposes
+
+:connection_data:
+  :url: https://fake.testrail.com
+  :username: at.fake@company.com
+  :password: user100
+
+:project: 2 # Test project id can be found in Test Rail
+:test_suite: 63 # Test suite id can be found in Test Rail
+:assigned_to: 27 # Id of person could be found in Test Rail
+:description_of_run: "Automatically generated report by auto tests."
+
+:status_comment: 0
+:test_pass: 1
+:need_to_retest: 4
+:test_failed: 5
+:new_test: 0
+
+:test_passed_comment: "test **passed:**"
+:test_failed_comment: "test **failed:**"
+
+:ventures: vn|id|ph|my|sg|th #values for generating parametrized url for running test
+:environments: live_test|staging|showroom #values for generating parametrized url for running test
+
+:in_progress: " (in progress)" #value for changing test run name for monitoring complete of test run
+
+:test_run_id: 4555
+
+:exec_command: "cucumber -p lazada.#{parameters.venture}.#{parameters.environment} TESTRAIL=1 --color -f json -o cucumber.json -t  "
+
+:types: 3 #types for filtering from Test Rail
