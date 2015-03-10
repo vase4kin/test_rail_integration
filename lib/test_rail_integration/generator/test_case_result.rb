@@ -1,9 +1,10 @@
 require_relative 'test_rail_data_load'
+require_relative 'connection'
 
 module TestRail
   class TestCaseResult
 
-    attr_accessor :test_case_id, :title, :comment, :exception_message, :assign_to, :previous_comment
+    attr_accessor :test_case_id, :title, :comment, :exception_message, :assign_to, :previous_comment, :previous_result, :scenario
 
     COMMENT_STATUS ||= TestRail::TestRailDataLoad.test_rail_data[:status_comment]
     PASS ||= TestRail::TestRailDataLoad.test_rail_data[:test_pass]
@@ -19,10 +20,12 @@ module TestRail
                  :unchanged_pass => {status: COMMENT_STATUS, comment: PASS_COMMENT}
     }
 
-    def initialize(test_case_id, title)
+    def initialize(test_case_id, title, scenario)
       self.test_case_id = test_case_id
       self.title = title
-      self.previous_comment = TestRail::Connection.get_last_failed_comment(test_case_id) unless Connection.get_indexes_of_fails(test_case_id).empty?
+      self.scenario = scenario
+      self.previous_comment = TestRail::Connection.get_last_failed_comment(test_case_id) unless TestRail::Connection.get_indexes_of_fails(test_case_id).empty?
+      self.previous_result = TestRail::Connection.get_previous_test_result(test_case_id)
     end
 
     #
@@ -39,6 +42,31 @@ module TestRail
       else
         {status_id: self.comment[:status], comment: comment_message}
       end
+    end
+
+    def failed?
+      !scenario.passed?
+    end
+
+    def passed?
+      scenario.passed? && previous_result != FAILED
+    end
+
+    def unchanged_pass?
+      scenario.passed? && previous_result == FAILED
+    end
+
+    def status_update
+      self.comment = COMMENT[:pass] if passed?
+      self.comment ||= COMMENT[:unchanged_pass] if unchanged_pass?
+
+      if failed?
+        self.comment ||= COMMENT[:fail]
+        self.exception_message = self.scenario.steps.exception rescue nil
+        self.assign_to = ASSIGN_TO
+      end
+
+      raise("Invalid test case result : scenario.passed? #{scenario.passed?}, prev_result? #{previous_result}, run_result? #{scenario}") if comment.nil?
     end
 
   end
