@@ -2,7 +2,7 @@ require 'fileutils'
 require 'thor/group'
 
 module TestRailIntegration
-  module TestTail
+  module TestRail
     module Generators
       class Project < Thor::Group
         include Thor::Actions
