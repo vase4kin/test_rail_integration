@@ -24,6 +24,7 @@ module TestRail
       self.test_case_id = test_case_id
       self.title = title
       self.scenario = scenario
+      # TODO call get_test_result one time
       self.previous_comment = TestRail::Connection.get_last_failed_comment(test_case_id) unless TestRail::Connection.get_indexes_of_fails(test_case_id).empty?
       self.previous_result = TestRail::Connection.get_previous_test_result(test_case_id)
     end

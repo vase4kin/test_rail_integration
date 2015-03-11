@@ -1,7 +1,7 @@
 require 'spec_helper'
 require_relative '../lib/test_rail_integration/generator/project/test_run'
 
-describe 'Performing command execution' do
+describe 'Command execution' do
 
   before(:each) do
     allow(TestRail::Connection).to receive(:get_test_runs).and_return([{'name' => 'test run name', 'id' => '4555'}])

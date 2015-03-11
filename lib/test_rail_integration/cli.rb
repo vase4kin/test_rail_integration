@@ -1,6 +1,6 @@
 require 'thor'
-require 'generator/project'
-require 'generator/project/test_run'
+require_relative 'generator/project'
+require_relative 'generator/project/test_run'
 
 module TestRailIntegration
   class CLI < Thor
