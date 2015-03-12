@@ -4,7 +4,15 @@ require_relative 'connection'
 module TestRail
   class TestCaseResult
 
-    attr_accessor :test_case_id, :title, :comment, :exception_message, :assign_to, :previous_comment, :previous_result, :scenario
+    attr_accessor :test_case_id,
+                  :title,
+                  :comment,
+                  :exception_message,
+                  :assign_to,
+                  :previous_comment,
+                  :previous_result,
+                  :scenario,
+                  :previous_test_results
 
     COMMENT_STATUS ||= TestRail::TestRailDataLoad.test_rail_data[:status_comment]
     PASS ||= TestRail::TestRailDataLoad.test_rail_data[:test_pass]
@@ -26,9 +34,9 @@ module TestRail
       self.test_case_id = scenario.source_tag_names.find { |e| e.match(TEST_RAIL_ID_REGEX) }[2..-1]
       self.title = scenario.title
       self.scenario = scenario
-      # TODO call get_test_result one time
-      self.previous_comment = TestRail::Connection.get_last_failed_comment(test_case_id) unless TestRail::Connection.get_indexes_of_fails(test_case_id).empty?
-      self.previous_result = TestRail::Connection.get_previous_test_result(test_case_id)
+      self.previous_test_results = TestRail::Connection.get_test_results(self.test_case_id)
+      self.previous_comment = get_last_failed_comment unless get_indexes_of_fails.empty?
+      self.previous_result = get_previous_test_result
     end
 
     #
@@ -70,6 +78,44 @@ module TestRail
       end
 
       raise("Invalid test case result : scenario.passed? #{scenario.passed?}, prev_result? #{previous_result}, run_result? #{scenario}") if comment.nil?
+    end
+
+    #
+    # Get indexes of failed results
+    #
+    def get_indexes_of_fails
+      indexes = previous_test_results.map.with_index { |result, index| result["status_id"] == COMMENT[:fail][:status] ? index : nil }
+      indexes.compact
+    end
+
+    #
+    # Parse results and returns previous comment.
+    #
+    def get_previous_comments
+      test_comment = previous_test_results.map { |hash| hash["comment"] }
+      comment = test_comment
+      comment ||= []
+      comment
+    end
+
+    #
+    # Get last failed comment for test case
+    #
+    def get_last_failed_comment
+      comments = get_previous_comments
+      index = get_indexes_of_fails.first
+      comments[index]
+    end
+
+    #
+    # Parse results and returns Failed if this test was marked as failed.
+    #
+    def get_previous_test_result
+      test_results = previous_test_results.map { |status_hash| status_hash["status_id"] }
+      status = FAILED if test_results.include?(FAILED)
+      status ||= PASS if test_results.first == PASS
+      status ||= NEW
+      status
     end
 
   end
