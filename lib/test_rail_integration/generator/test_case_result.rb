@@ -20,9 +20,11 @@ module TestRail
                  :unchanged_pass => {status: COMMENT_STATUS, comment: PASS_COMMENT}
     }
 
-    def initialize(test_case_id, title, scenario)
-      self.test_case_id = test_case_id
-      self.title = title
+    TEST_RAIL_ID_REGEX ||= /^@C\d+/
+
+    def initialize(scenario)
+      self.test_case_id = scenario.source_tag_names.find { |e| e.match(TEST_RAIL_ID_REGEX) }[2..-1]
+      self.title = scenario.title
       self.scenario = scenario
       # TODO call get_test_result one time
       self.previous_comment = TestRail::Connection.get_last_failed_comment(test_case_id) unless TestRail::Connection.get_indexes_of_fails(test_case_id).empty?
