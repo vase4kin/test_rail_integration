@@ -6,6 +6,7 @@ GEM
     fileutils (0.7)
       rmagick (>= 2.13.1)
     multi_json (1.11.0)
+    rake (10.4.2)
     rmagick (2.13.4)
     rspec (3.2.0)
       rspec-core (~> 3.2.0)
@@ -32,6 +33,7 @@ PLATFORMS
 
 DEPENDENCIES
   fileutils
+  rake
   rspec (~> 3.0)
   simplecov
   thor
